@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitki</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: Arial, sans-serif;
+            position: relative;
+            cursor: none;
+            background-color: #000;
+        }
+
+        /* Video background */
+        .background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            object-fit: cover;
+        }
+
+        /* Overlay with parallax effect */
+        .overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease-out;
+        }
+
+        /* Main content container */
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Profile section */
+        .profile {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #ffcc00;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        /* Heading styles */
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+
+        /* Link styles */
+        .link-item {
+            display: block;
+            margin: 1.5rem auto;
+            color: white;
+            text-decoration: none;
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+            position: relative;
+            width: fit-content;
+            padding: 0.5rem 1rem;
+        }
+
+        .link-item::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #ffcc00;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .link-item:hover {
+            color: #ffcc00;
+            transform: scale(1.05);
+        }
+
+        .link-item:hover::before {
+            width: 100%;
+        }
+
+        /* Custom cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 2px solid black;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .link-item {
+                font-size: 1rem;
+            }
+
+            .custom-cursor {
+                display: none;
+            }
+
+            .profile-avatar {
+                width: 90px;
+                height: 90px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .profile-avatar {
+                width: 70px;
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background video -->
+    <video class="background-video" autoplay muted loop playsinline>
+        <source src="attached_assets/Live Wallpaper 4K Abstract Purple Background.mp4" type="video/mp4">
+        <div class="video-fallback">
+            Twój browser nie wspiera tagu wideo.
+        </div>
+    </video>
+
+    <!-- Overlay with parallax effect -->
+    <div class="overlay"></div>
+
+    <!-- Main content -->
+    <div class="container">
+        <div class="profile">
+            <img id="discord-avatar" class="profile-avatar" src="https://cdn.discordapp.com/avatars/defaultavatar.png" alt="Discord Avatar">
+            <h1 id="discord-username">Nexxi</h1>
+        </div>
+        <a href="https://discord.gg/AFQjK939Va" target="_blank" rel="noopener noreferrer" class="link-item">
+            <span class="link-text">Kitki</span>
+        </a>
+        <a href="#" class="link-item">
+            <span class="link-text">Blox Fruits Gang[BFG]</span>
+        </a>
+    </div>
+
+    <!-- Custom cursor -->
+    <div class="custom-cursor"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const overlay = document.querySelector('.overlay');
+            const cursor = document.querySelector('.custom-cursor');
+            const links = document.querySelectorAll('a');
+            const discordUserId = '1257295778796408847';
+
+            // Discord data update function
+            async function updateDiscordData() {
+                try {
+                    console.log('Fetching Discord data...');
+                    const response = await fetch(`https://discord.com/api/v9/users/${discordUserId}`);
+                    console.log('Discord API response status:', response.status);
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('Discord data received:', data);
+                        document.getElementById('discord-username').textContent = data.username;
+                        // Ustawiamy avatar
+                        const avatarHash = data.avatar;
+                        const avatarUrl = avatarHash 
+                            ? `https://cdn.discordapp.com/avatars/${discordUserId}/${avatarHash}.png`
+                            : 'https://cdn.discordapp.com/embed/avatars/0.png';
+                        document.getElementById('discord-avatar').src = avatarUrl;
+                    } else {
+                        console.error('Discord API error:', response.status, response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error fetching Discord data:', error);
+                }
+            }
+
+            // Smooth cursor movement
+            let cursorX = 0;
+            let cursorY = 0;
+            let currentX = 0;
+            let currentY = 0;
+
+            const smoothCursor = () => {
+                const dx = cursorX - currentX;
+                const dy = cursorY - currentY;
+
+                currentX += dx * 0.1;
+                currentY += dy * 0.1;
+
+                cursor.style.left = `${currentX}px`;
+                cursor.style.top = `${currentY}px`;
+
+                requestAnimationFrame(smoothCursor);
+            };
+
+            // Track mouse movement
+            document.addEventListener('mousemove', (e) => {
+                cursorX = e.clientX;
+                cursorY = e.clientY;
+
+                // Parallax effect for overlay
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.02;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.02;
+                overlay.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+
+            // Custom cursor interactions with links
+            links.forEach(link => {
+                link.addEventListener('mouseenter', () => {
+                    cursor.style.width = '40px';
+                    cursor.style.height = '40px';
+                    cursor.style.backgroundColor = '#ffcc00';
+                    cursor.style.mixBlendMode = 'normal';
+                });
+
+                link.addEventListener('mouseleave', () => {
+                    cursor.style.width = '20px';
+                    cursor.style.height = '20px';
+                    cursor.style.backgroundColor = 'white';
+                    cursor.style.mixBlendMode = 'difference';
+                });
+            });
+
+            // Start smooth cursor animation
+            smoothCursor();
+
+            // Handle cursor visibility
+            document.addEventListener('mouseenter', () => {
+                cursor.style.opacity = '1';
+            });
+
+            document.addEventListener('mouseleave', () => {
+                cursor.style.opacity = '0';
+            });
+
+            // Update Discord data periodically
+            updateDiscordData();
+            setInterval(updateDiscordData, 300000); // Update every 5 minutes
+        });
+    </script>
+</body>
+</html>
