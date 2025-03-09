@@ -39,3 +39,10 @@ ENV/
 replit.nix
 poetry.lock
 .pythonlibs/
+
+# Project specific
+CoarseWrithingBucket.zip
+extract.py
+uv.lock
+pyproject.toml
+attached_assets/Pasted-*
