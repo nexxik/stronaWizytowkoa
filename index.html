@@ -55,28 +55,6 @@
             padding: 2rem;
         }
 
-        /* Profile section */
-        .profile {
-            margin-bottom: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 3px solid #ffcc00;
-            box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
-            transition: transform 0.3s ease;
-        }
-
-        .profile-avatar:hover {
-            transform: scale(1.1);
-        }
-
         /* Heading styles */
         h1 {
             font-size: 4rem;
@@ -147,21 +125,11 @@
             .custom-cursor {
                 display: none;
             }
-
-            .profile-avatar {
-                width: 90px;
-                height: 90px;
-            }
         }
 
         @media (max-width: 480px) {
             h1 {
                 font-size: 2rem;
-            }
-
-            .profile-avatar {
-                width: 70px;
-                height: 70px;
             }
         }
     </style>
@@ -180,10 +148,7 @@
 
     <!-- Main content -->
     <div class="container">
-        <div class="profile">
-            <img id="discord-avatar" class="profile-avatar" src="https://cdn.discordapp.com/avatars/defaultavatar.png" alt="Discord Avatar">
-            <h1 id="discord-username">Nexxi</h1>
-        </div>
+        <h1>Nexxi</h1>
         <a href="https://discord.gg/AFQjK939Va" target="_blank" rel="noopener noreferrer" class="link-item">
             <span class="link-text">Kitki</span>
         </a>
@@ -200,10 +165,6 @@
             const overlay = document.querySelector('.overlay');
             const cursor = document.querySelector('.custom-cursor');
             const links = document.querySelectorAll('a');
-
-            // Ustawiamy bezpośrednio nazwę i avatar
-            document.getElementById('discord-username').textContent = 'Nexxi';
-            document.getElementById('discord-avatar').src = 'https://cdn.discordapp.com/avatars/1257295778796408847/a_d71c971b7ea080526b161c0e08fe36c2.gif';
 
             // Smooth cursor movement
             let cursorX = 0;
