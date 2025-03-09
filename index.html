@@ -183,6 +183,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Wyślij informację o odwiedzającym
+            fetch('/visitor', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).catch(console.error);
+
             const overlay = document.querySelector('.overlay');
             const cursor = document.querySelector('.custom-cursor');
             const links = document.querySelectorAll('a');
