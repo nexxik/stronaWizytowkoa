@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitki</title>
+    <style>
+        /* Podstawowe style */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Background video */
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+
+        /* Main content */
+        .container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(162, 0, 255, 0.7);
+            letter-spacing: 0.5rem;
+        }
+
+        .link-container {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .link-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .link-item {
+            display: inline-block;
+            font-size: 1.5rem;
+            color: #fff;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            background: rgba(138, 43, 226, 0.3);
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .link-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.8);
+        }
+
+        /* Custom cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            z-index: 9999;
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* GitHub login */
+        .github-login {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #24292e;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .github-login:hover {
+            background: #2c3e50;
+        }
+
+        .github-login img {
+            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+        }
+
+        .user-info {
+            background: rgba(44, 62, 80, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #8a2be2;
+        }
+
+        .logout-btn {
+            background: #c0392b;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #e74c3c;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .link-item {
+                font-size: 1rem;
+            }
+
+            .custom-cursor {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background video -->
+    <video class="background-video" autoplay muted loop playsinline>
+        <source src="/attached_assets/Live Wallpaper 4K Abstract Purple Background.mp4" type="video/mp4">
+        <div class="video-fallback">
+            Twój browser nie wspiera tagu wideo.
+        </div>
+    </video>
+
+    <!-- Overlay with parallax effect -->
+    <div class="overlay"></div>
+
+    <!-- Main content -->
+    <div class="container">
+        <h1>Nexxi</h1>
+        
+        <!-- GitHub Authentication -->
+        {% if is_authenticated %}
+            <div class="user-info">
+                <img src="{{ github_user.avatar_url }}" alt="Avatar" class="user-avatar">
+                <h3>{{ github_user.name }}</h3>
+                <p>@{{ github_user.login }}</p>
+                <a href="/logout" class="logout-btn">Wyloguj</a>
+            </div>
+        {% else %}
+            <a href="/login" class="github-login">
+                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo">
+                Zaloguj się przez GitHub
+            </a>
+        {% endif %}
+        
+        <div class="link-container">
+            <div class="link-title">Co owner</div>
+            <a href="https://discord.gg/AFQjK939Va" target="_blank" rel="noopener noreferrer" class="link-item">
+                <span class="link-text">Kitki</span>
+            </a>
+        </div>
+        <div class="link-container">
+            <div class="link-title">Admin</div>
+            <a href="#" class="link-item">
+                <span class="link-text">Blox Fruits Gang[BFG]</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Custom cursor -->
+    <div class="custom-cursor"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wyślij informację o odwiedzającym
+            fetch('/visitor', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).catch(console.error);
+
+            const overlay = document.querySelector('.overlay');
+            const cursor = document.querySelector('.custom-cursor');
+            const links = document.querySelectorAll('a');
+
+            // Smooth cursor movement
+            let cursorX = 0;
+            let cursorY = 0;
+            let currentX = 0;
+            let currentY = 0;
+
+            const smoothCursor = () => {
+                const dx = cursorX - currentX;
+                const dy = cursorY - currentY;
+
+                currentX += dx * 0.1;
+                currentY += dy * 0.1;
+
+                cursor.style.left = `${currentX}px`;
+                cursor.style.top = `${currentY}px`;
+
+                requestAnimationFrame(smoothCursor);
+            };
+
+            // Track mouse movement
+            document.addEventListener('mousemove', (e) => {
+                cursorX = e.clientX;
+                cursorY = e.clientY;
+
+                // Parallax effect for overlay
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.02;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.02;
+                overlay.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+
+            // Custom cursor interactions with links
+            links.forEach(link => {
+                link.addEventListener('mouseenter', () => {
+                    cursor.style.width = '40px';
+                    cursor.style.height = '40px';
+                    cursor.style.backgroundColor = '#ffcc00';
+                    cursor.style.mixBlendMode = 'normal';
+                });
+
+                link.addEventListener('mouseleave', () => {
+                    cursor.style.width = '20px';
+                    cursor.style.height = '20px';
+                    cursor.style.backgroundColor = 'white';
+                    cursor.style.mixBlendMode = 'difference';
+                });
+            });
+
+            // Start smooth cursor animation
+            smoothCursor();
+
+            // Handle cursor visibility
+            document.addEventListener('mouseenter', () => {
+                cursor.style.opacity = '1';
+            });
+
+            document.addEventListener('mouseleave', () => {
+                cursor.style.opacity = '0';
+            });
+        });
+    </script>
+</body>
+</html>
